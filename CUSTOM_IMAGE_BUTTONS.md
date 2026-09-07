@@ -33,3 +33,5 @@ sources:
 If `service:` is omitted, the original behavior is preserved and the button calls `media_player.select_source` with its `name:`.
 
 Because the upstream source grid uses four columns, four configured buttons form one row, eight form two rows, and twelve form three rows.
+
+Build trigger after enabling Actions.
