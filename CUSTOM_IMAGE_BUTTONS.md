@@ -15,10 +15,10 @@ cnn.png
 boston25.png
 nbc10.png
 msnow.png
-Directv.png
+directv.png
 ```
 
-`Directv.png` intentionally matches the current filename exactly; Home Assistant runs on Linux, so image paths are case-sensitive.
+Home Assistant runs on Linux, so image paths are case-sensitive.
 
 A source button can use a local Home Assistant image or a normal web image. `image:` is accepted as an alias for `icon:`.
 
@@ -49,7 +49,7 @@ sources:
     image: /local/tv-logos/hbo.png
 
   - name: DIRECTV Live TV + Streaming
-    image: /local/tv-logos/Directv.png
+    image: /local/tv-logos/directv.png
 
   - name: XBOX Game Console
     icon: mdi:microsoft-xbox
