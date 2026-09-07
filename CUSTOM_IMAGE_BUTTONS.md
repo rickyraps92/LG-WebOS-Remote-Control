@@ -25,9 +25,9 @@ A source-grid button can call a Home Assistant service instead of selecting a TV
 sources:
   - name: NBC
     image: /local/tv-logos/nbc.svg
-    service: script.directv_channel
+    service: script.directv_favorite_channel
     data:
-      channel: 10
+      down_count: 2
 ```
 
 If `service:` is omitted, the original behavior is preserved and the button calls `media_player.select_source` with its `name:`.
