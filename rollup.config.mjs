@@ -32,7 +32,7 @@ const plugins = [
 
 export default [
     {
-        input: "src/lg-remote-control.ts",
+        input: "src/lg-remote-control-patched.ts",
         output: {
             dir: "dist",
             format: "es",
