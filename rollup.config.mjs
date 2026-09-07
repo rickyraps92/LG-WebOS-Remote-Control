@@ -36,6 +36,7 @@ export default [
         output: {
             dir: "dist",
             format: "es",
+            entryFileNames: "lg-remote-control.js",
         },
         plugins: [...plugins],
     },
