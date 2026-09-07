@@ -25,7 +25,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add -f dist/lg-remote-control.js
+          git add -f dist/lg-webos-remote-control-custom.js
           if git diff --cached --quiet; then
             echo "Built file is already current."
             exit 0
@@ -36,5 +36,5 @@ jobs:
       - name: Archive built file
         uses: actions/upload-artifact@v4
         with:
-          name: lg-remote-control
-          path: dist/lg-remote-control.js
+          name: lg-webos-remote-control-custom
+          path: dist/lg-webos-remote-control-custom.js
