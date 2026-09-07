@@ -9,7 +9,7 @@ if (RemoteControl && !RemoteControl.__imageActionPatchApplied) {
     const originalSetConfig = RemoteControl.prototype.setConfig;
 
     // Accept arbitrary image URLs/paths anywhere the source button `icon` field is used.
-    // Examples: /local/tv-logos/nbc.svg, https://example.com/logo.png, data:image/...
+    // Examples: /local/tv-logos/nbc10.png, https://example.com/logo.png, data:image/...
     RemoteControl.getIcon = function(iconName: any) {
         const isImage = typeof iconName === "string" && (
             iconName.startsWith("/") ||
