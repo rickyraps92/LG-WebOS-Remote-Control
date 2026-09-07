@@ -36,7 +36,7 @@ export default [
         output: {
             dir: "dist",
             format: "es",
-            entryFileNames: "lg-remote-control.js",
+            entryFileNames: "lg-webos-remote-control-custom.js",
         },
         plugins: [...plugins],
     },
