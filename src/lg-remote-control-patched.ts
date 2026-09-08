@@ -7,6 +7,7 @@ if (RemoteControl && !RemoteControl.__imageActionPatchApplied) {
     const originalGetIcon = RemoteControl.getIcon.bind(RemoteControl);
     const originalSelectSource = RemoteControl.prototype._select_source;
     const originalSetConfig = RemoteControl.prototype.setConfig;
+    const baseFirstUpdated = Object.getPrototypeOf(RemoteControl.prototype)?.firstUpdated;
 
     // Accept arbitrary image URLs/paths anywhere the source button `icon` field is used.
     // Examples: /local/tv-logos/nbc10.png, https://example.com/logo.png, data:image/...
@@ -69,6 +70,46 @@ if (RemoteControl && !RemoteControl.__imageActionPatchApplied) {
         }
 
         return originalSelectSource.call(this, sourceName);
+    };
+
+    // Replace the upstream press-and-hold volume implementation with deterministic
+    // single-click controls. Upstream starts a repeating setInterval after a hold
+    // and only clears it on mouseup/touchend. A missed release event can therefore
+    // leave volume_up or volume_down running indefinitely. The custom fork does not
+    // use a timer/interval for volume at all: one completed click equals one HA call.
+    // This intentionally disables hold-to-repeat for BOTH volume directions.
+    RemoteControl.prototype.firstUpdated = function(changedProperties: any) {
+        // Preserve Lit's base lifecycle hook without invoking the upstream
+        // firstUpdated(), because that method installs the unsafe long-press timers.
+        if (typeof baseFirstUpdated === "function") {
+            baseFirstUpdated.call(this, changedProperties);
+        }
+
+        const plusButton = this.shadowRoot?.querySelector("#plusButton");
+        const minusButton = this.shadowRoot?.querySelector("#minusButton");
+
+        const updateValue = (service: "volume_up" | "volume_down") => {
+            if (isNaN(this.volume_value)) {
+                return;
+            }
+
+            this._show_vol_text = true;
+            this.callServiceFromConfig(service.toUpperCase(), `media_player.${service}`, {
+                entity_id: this.output_entity,
+            });
+
+            if (this.valueDisplayTimeout) {
+                clearTimeout(this.valueDisplayTimeout);
+            }
+            this.valueDisplayTimeout = setTimeout(() => {
+                this._show_vol_text = false;
+                this.requestUpdate();
+            }, 500);
+            this.requestUpdate();
+        };
+
+        plusButton?.addEventListener("click", () => updateValue("volume_up"));
+        minusButton?.addEventListener("click", () => updateValue("volume_down"));
     };
 
     RemoteControl.__imageActionPatchApplied = true;
